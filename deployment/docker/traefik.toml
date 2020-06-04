@@ -10,22 +10,33 @@ defaultEntryPoints = ["https","http"]
     entryPoint = "https"
   [entryPoints.https]
   address = ":443"
-  [entryPoints.https.tls]
+    [entryPoints.https.tls]
 
 [retry]
 
 [api]
+#  entryPoint = "traefik"
+#  dashboard = true
+#  address = ":8080"
 
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-domain = "yourdomain.com"
+domain = "openhab-hu5ni@duckdns.org"
 watch = true
 exposedByDefault = false
 
 [acme]
-email = "your@email.com"
+email = "gbridge.husni@gmail.com"
 storage = "acme.json"
 entryPoint = "https"
 onHostRule = true
-[acme.httpChallenge]
-entryPoint = "http"
+
+#[acme.httpChallenge]
+#entryPoint = "http"
+
+[acme.dnsChallenge]
+  provider = "duckdns"
+  delayBeforeCheck = 0
+[[acme.domains]]
+  main = "openhab-hu5ni.duckdns.org"
+#  sans = ["hu5ni.duckdns.org", "openhab-hu5ni.duckdns.org"]

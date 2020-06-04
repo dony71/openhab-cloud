@@ -1,6 +1,6 @@
 {
     "system": {
-      "host": "localhost",
+      "host": "openhab-hu5ni.duckdns.org",
       "port": "443",
       "protocol": "https",
       "logger" : {
@@ -38,7 +38,7 @@
     "redis": {
         "host": "redis",
         "port": "6379",
-        "password": "123_openHAB"
+        "password": "Sb12345678"
     },
     "mailer": {
         "host" : "smtp.openhab.org",

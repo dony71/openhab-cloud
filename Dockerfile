@@ -1,25 +1,25 @@
-FROM mhart/alpine-node:7.10.1
+#FROM mhart/alpine-node:7.10.1
+FROM arm64v8/node:7.10.1-stretch
 
 # File Author / Maintainer
-MAINTAINER Mehmet Arziman
+MAINTAINER Husni
 
-RUN apk update && \
-	apk upgrade && \
-	apk add --no-cache build-base && \
-	apk add --no-cache python
+RUN apt-get -y update && \
+	apt-get -y upgrade && \
+	apt-get -y install build-essential python
 
-RUN addgroup -S openhabcloud && \
-	adduser -H -S -g openhabcloud openhabcloud
+RUN addgroup --system openhabcloud && \
+	adduser --no-create-home --system --gecos openhabcloud openhabcloud
     
 # Add proper timezone
-RUN apk add --no-cache tzdata && \
-	cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime && \
-	echo "Europe/Berlin" >  /etc/timezone
+RUN apt-get -y install tzdata && \
+	cp /usr/share/zoneinfo/America/Los_Angeles /etc/localtime && \
+	echo "America/Los_Angeles" >  /etc/timezone
 
 # Cleanup container
 RUN rm -rf \
     /usr/share/man \
-    /tmp/* /var/cache/apk/* \
+    /tmp/* /var/cache/apt/* \
     /root/.npm \
     /root/.node-gyp \
     /root/.gnupg \

@@ -2,7 +2,8 @@ version: '2'
 services:
     app:
       container_name: app
-      image: openhab/openhabcloud-app:latest
+      #image: openhab/openhabcloud-app:latest
+      image: dockerhu5ni/openhabcloud:latest
       working_dir: /opt/openhabcloud
       volumes:
       - ./config-docker.json:/opt/openhabcloud/config.json
@@ -12,7 +13,7 @@ services:
       - mongodb
       - redis
       ports:
-      - "3000"
+      - "3000:3000"
       depends_on:
       - mongodb
       - redis  
@@ -20,28 +21,30 @@ services:
       labels:
       - "traefik.docker.network=ohcloud-network"
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:<your-host-name>"
+      - "traefik.frontend.rule=Host:openhab-hu5ni.duckdns.org"
+      #- "traefik.frontend.rule=Host:localhost"
       - "traefik.port=3000"
       - "traefik.protocol=http"
     mongodb:
       container_name: mongodb
       image: mongo:4.1.10-bionic
-      ports:
-      - "27017"
+      #ports:
+      #- "27017"
       networks:
       - ohcloud-network
-      #volumes:
-      #- <your local disk path>:/data/db
+      volumes:
+      - ./mongodb:/data/db
       restart: always
     redis:
       container_name: redis
-      image: bitnami/redis:latest
+      image: redis:latest
+      #image: bitnami/redis:latest
       networks:
       - ohcloud-network
-      ports:
-      - "6379"
+      #ports:
+      #- "6379"
       environment:
-      - REDIS_PASSWORD=123_openHAB
+      - REDIS_PASSWORD=Sb12345678
       restart: always
     traefik:
       container_name: traefik
@@ -49,13 +52,15 @@ services:
       networks:
       - internet
       - ohcloud-network
-      ports:
-      - "443:443"
-      - "80:80"
-      - "8080:8080"
+      #ports:
+      #- "8443:443"
+      #- "81:80"
+      #- "8081:8080"
       volumes:
       - ./traefik.toml:/etc/traefik/traefik.toml
       - /var/run/docker.sock:/var/run/docker.sock
+      environment:
+      - DUCKDNS_TOKEN=4090f5a3-dd39-4a67-ad7c-bff6a19ec2c8
 networks:
   internet:
     external:
